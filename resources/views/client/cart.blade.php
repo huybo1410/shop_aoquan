@@ -55,7 +55,8 @@
                       </td>
                       <td>
                         <h5>
-                        {{ format_number_to_money($cart->price) }}
+                        
+                        {{ number_format($cart->price,0,",",".") }} đ
                         </h5>
                       </td>
                       <td>
@@ -64,7 +65,8 @@
                       </td>
                       <td>
                           <h5>
-                              {{ format_number_to_money($cart->price * $cart->quantity) }}
+                            {{ number_format($cart->price * $cart->quantity,0,",",".") }} đ
+                              
                           </h5>
                       </td>
                       <td>
@@ -91,7 +93,8 @@
                         Tổng tiền sản phẩm
                       </h5>
                       <span>
-                        {{ format_number_to_money(Cart::getTotal()) }} VNĐ
+                        {{ number_format(Cart::getTotal(),0,",",".") }} VNĐ
+                        {{-- {{ format_number_to_money(Cart::getTotal()) }} VNĐ --}}
                       </span>
                     </div>
                     <div class="grandtotal">
