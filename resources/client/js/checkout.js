@@ -1,7 +1,8 @@
 $(document).ready(function(){
     $.ajaxSetup({
         headers: {
-            token: "24d5b95c-7cde-11ed-be76-3233f989b8f3"
+            // token: "24d5b95c-7cde-11ed-be76-3233f989b8f3"
+            token:  "1090f410-3ad4-11ef-8e53-0a00184fe694"
         },
     });
     getProvind();
@@ -62,7 +63,8 @@ function getWard()
 
 function getFee()
 {
-    let shop_id = "3577591";
+    //let shop_id = "3577591";
+    let shop_id = "192814";
     let from_district = "1530";
     let to_district = $('#district').val();
     $.ajax({

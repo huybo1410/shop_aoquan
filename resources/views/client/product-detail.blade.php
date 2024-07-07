@@ -47,23 +47,27 @@
               </div>
             </div>
             <div class="products-description">
-              <h5 class="name">
+              <h4 class="name">
                 {{ $product->name }}
-              </h5>
+              </h4>
+              
+              <p>
+                {!! $product->description !!}
+              </p>
               <p class="quantyti_sold">
                 Số lượng đã bán: 
                 <span class=" light-red">
                   {{ $productSold->sum ?? 0}}
                 </span>
               </p>
-              <p>
-                {!! $product->description !!}
-              </p>
               <hr class="border">
               <div class="price">
-                Price : 
+                Giá: 
                 <span class="new_price">
-                  {{ format_number_to_money($product->price_sell) }}
+                  {{ 
+                     
+                    number_format($product->price_sell,0,",",".")
+                    }}
                   <sup>
                     VNĐ
                   </sup>
@@ -140,7 +144,7 @@
                           {{ $relatedProduct->name }}
                         </div>
                         <h4 class="price">
-                          {{ format_number_to_money($relatedProduct->price_sell) }} VNĐ
+                          {{ number_format($relatedProduct->price_sell,0,",",".") }} VNĐ
                         </h4>
                         <div class="productname" style="padding-bottom: 10px; padding-top: unset;">
                           <x-avg-stars :number="$relatedProduct->avg_rating" />

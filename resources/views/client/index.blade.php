@@ -19,7 +19,7 @@
                 </li>
                 <li>
                     <div class="flat-caption caption2 formLeft delay400 text-center">
-                        <h1>FLAT SHOP</h1>
+                        <h1>Cửa Hàng HxH</h1>
                     </div>
                     <div class="flat-caption caption3 formLeft delay500 text-center">
                         <p>Chào mừng đến với shop thời trang của chúng tôi - nơi cung cấp các sản phẩm đa dạng và chất lượng cao. Đến với chúng tôi để tìm kiếm phong cách của bạn!</p>
@@ -63,7 +63,10 @@
                                 <a href="{{ route('user.products_detail', $bellingProduct->id) }}"><img src="{{ asset("asset/client/images/products/small/$bellingProduct->img") }}" alt="Product Name"></a>
                             </div>
                             <div class="productname" style="height: 42px;">{{ $bellingProduct->name }}</div>
-                            <h4 class="price">{{ format_number_to_money($bellingProduct->price_sell) }} VNĐ</h4>
+                            <h4 class="price">
+                                {{-- {{ format_number_to_money($bellingProduct->price_sell) }}  --}}
+                                {{ number_format($bellingProduct->price_sell,0,",",".") }}
+                                VNĐ</h4>
                             <div class="productname" style="padding-bottom: 10px; padding-top: unset;">
                                 <x-avg-stars :number="$bellingProduct->avg_rating" />
                                 <span style="font-size: 14px;">Đã bán: {{ $bellingProduct->sum }}</span>
@@ -78,7 +81,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="featured-products">
-            <h3 class="title">Sản Phẩm Mới Nhất</h3>
+            <h3 class="title">Sản Phẩm Mới</h3>
             <div class="control"></div>
             <ul>
                 <li>
@@ -86,10 +89,12 @@
                     @foreach ($newProducts as $newProduct)
                         <div class="col-md-3 col-sm-6">
                             <div class="products">
-                                <div class="offer">Mới Nhất</div>
+                                <div class="offer">Mới</div>
                                 <div class="thumbnail"><a href="{{ route('user.products_detail', $newProduct->id) }}"><img src="{{ asset("asset/client/images/products/small/$newProduct->img") }}" alt="Product Name"></a></div>
                                 <div class="productname" style="height: 42px;">{{ $newProduct->name }}</div>
-                                <h4 class="price">{{ format_number_to_money($newProduct->price_sell) }} VNĐ</h4>
+                                <h4 class="price">
+                                    {{ number_format($newProduct->price_sell,0,",",".") }}
+                                     VNĐ</h4>
                                 <div class="productname" style="padding-bottom: 10px; padding-top: unset;">
                                     <x-avg-stars :number="$newProduct->avg_rating" />
                                     <span style="font-size: 14px;">Đã bán: {{ $newProduct->sum }}</span>

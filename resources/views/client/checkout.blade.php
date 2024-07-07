@@ -125,7 +125,10 @@
                         <div class="info-order">
                           <div class="info__order-box">
                             <span>Tổng tiền sản phẩm</span>
-                            <span id="total-product">{{ format_number_to_money(Cart::getTotal()) }}</span>
+                            <span id="total-product">
+                              {{-- {{ format_number_to_money(Cart::getTotal()) }} --}}
+                              {{ number_format(Cart::getTotal(),0,",",".") }} đ
+                            </span>
                           </div>
                         </div>
                         <div class="info-order">
@@ -134,12 +137,12 @@
                             <span id="fee">0</span>
                           </div>
                         </div>
-                        <div class="info-order">
+                        {{-- <div class="info-order">
                           <div class="info__order-box">
                             <span>Áp dụng giảm giá</span>
                             <span>0</span>
                           </div>
-                        </div>
+                        </div> --}}
                         <div class="info-order">
                           <div class="info__order-box">
                             <span>Tổng đơn hàng</span>
