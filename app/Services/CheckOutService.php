@@ -135,19 +135,19 @@ class CheckOutService
         }
     }
 
-    public function paymentMomo() 
-    {
-        $orderId = time() . mt_rand(111, 999)."";
-        $amount = \Cart::getTotal() + $this->getTransportFee()."";
-        $returnUrl = route('checkout.callback_momo');
-        $notifyUrl = route('checkout.callback_momo');
-        return $this->payWithMoMo($orderId, $amount, $returnUrl, $notifyUrl);
-    }
+    // public function paymentMomo() 
+    // {
+    //     $orderId = time() . mt_rand(111, 999)."";
+    //     $amount = \Cart::getTotal() + $this->getTransportFee()."";
+    //     $returnUrl = route('checkout.callback_momo');
+    //     $notifyUrl = route('checkout.callback_momo');
+    //     return $this->payWithMoMo($orderId, $amount, $returnUrl, $notifyUrl);
+    // }
 
     public function getTransportFee()
     {
         $fromDistrict = "1530";
-        $shopId = "3577591";
+        $shopId = "192814";
         $toDistrict = Auth::user()->address->district;
         $response = Http::withHeaders([
             'token' => '24d5b95c-7cde-11ed-be76-3233f989b8f3'
@@ -177,144 +177,144 @@ class CheckOutService
         return $response['data']['total'];
     }
 
-    public function callbackMomo(Request $request)
-    {
-        try {
-            if ($request->resultCode == 0 || $request->vnp_ResponseCode == 00) {
-                $dataOrder = [
-                    'id' => $request->orderId ?? $request->vnp_TxnRef,
-                    'payment_id' => (isset($request->vnp_TxnRef)) ? Payment::METHOD['vnpay'] : Payment::METHOD['momo'],
-                    'user_id' => Auth::user()->id,
-                    'total_money' => $request->amount ?? $request->vnp_Amount / 100,
-                    'order_status' => Order::STATUS_ORDER['wait'],
-                    'transport_fee' => $this->getTransportFee(),
-                    'note' => null,
-                ];
-                DB::beginTransaction();
-                $order = $this->orderRepository->create($dataOrder);
+    // public function callbackMomo(Request $request)
+    // {
+    //     try {
+    //         if ($request->resultCode == 0 || $request->vnp_ResponseCode == 00) {
+    //             $dataOrder = [
+    //                 'id' => $request->orderId ?? $request->vnp_TxnRef,
+    //                 'payment_id' => (isset($request->vnp_TxnRef)) ? Payment::METHOD['vnpay'] : Payment::METHOD['momo'],
+    //                 'user_id' => Auth::user()->id,
+    //                 'total_money' => $request->amount ?? $request->vnp_Amount / 100,
+    //                 'order_status' => Order::STATUS_ORDER['wait'],
+    //                 'transport_fee' => $this->getTransportFee(),
+    //                 'note' => null,
+    //             ];
+    //             DB::beginTransaction();
+    //             $order = $this->orderRepository->create($dataOrder);
 
-                foreach(\Cart::getContent() as $product){
-                    $orderDetail = [
-                        'order_id' => $order->id,
-                        'product_size_id' => $product->id,
-                        'unit_price' => $product->price,
-                        'quantity' => $product->quantity,
-                    ];
-                    $this->orderDetailRepository->create($orderDetail);
-                }
-                DB::commit();
-                \Cart::clear();
+    //             foreach(\Cart::getContent() as $product){
+    //                 $orderDetail = [
+    //                     'order_id' => $order->id,
+    //                     'product_size_id' => $product->id,
+    //                     'unit_price' => $product->price,
+    //                     'quantity' => $product->quantity,
+    //                 ];
+    //                 $this->orderDetailRepository->create($orderDetail);
+    //             }
+    //             DB::commit();
+    //             \Cart::clear();
                 
-                return redirect()->route('order_history.index');
-            }
+    //             return redirect()->route('order_history.index');
+    //         }
 
-            return redirect()->route('checkout.index');
-        } catch (Exception $e) {
-            Log::error($e);
-            DB::rollBack();
-            foreach(\Cart::getContent() as $product){
-                $productSize = ProductSize::where('id', $product->id)->first();
-                if($productSize->quantity < $product->quantity) {
-                    \Cart::update(
-                        $product->id,
-                        [
-                            'quantity' => [
-                                'relative' => false,
-                                'value' => $productSize->quantity
-                            ],
-                        ]
-                    );
-                }
-            }
-            return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra vui lòng kiểm tra lại');
-        }
-    }
+    //         return redirect()->route('checkout.index');
+    //     } catch (Exception $e) {
+    //         Log::error($e);
+    //         DB::rollBack();
+    //         foreach(\Cart::getContent() as $product){
+    //             $productSize = ProductSize::where('id', $product->id)->first();
+    //             if($productSize->quantity < $product->quantity) {
+    //                 \Cart::update(
+    //                     $product->id,
+    //                     [
+    //                         'quantity' => [
+    //                             'relative' => false,
+    //                             'value' => $productSize->quantity
+    //                         ],
+    //                     ]
+    //                 );
+    //             }
+    //         }
+    //         return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra vui lòng kiểm tra lại');
+    //     }
+    // }
 
-    public function checkSignature(Request $request)
-    {
-        $partnerCode = $request->partnerCode;
-        $accessKey = $request->accessKey;
-        $requestId = $request->requestId."";
-        $amount = $request->amount."";
-        $orderId = $request->orderId."";
-        $orderInfo = $request->orderInfo;
-        $orderType = $request->orderType;
-        $transId = $request->transId;
-        $message = $request->message;
-        $localMessage = $request->localMessage;
-        $responseTime = $request->responseTime;
-        $errorCode = $request->errorCode;   
-        $payType = $request->payType;
-        $extraData = $request->extraData;
-        $secretKey = env('MOMO_SECRET_KEY');
-        $extraData = "";
+    // public function checkSignature(Request $request)
+    // {
+    //     $partnerCode = $request->partnerCode;
+    //     $accessKey = $request->accessKey;
+    //     $requestId = $request->requestId."";
+    //     $amount = $request->amount."";
+    //     $orderId = $request->orderId."";
+    //     $orderInfo = $request->orderInfo;
+    //     $orderType = $request->orderType;
+    //     $transId = $request->transId;
+    //     $message = $request->message;
+    //     $localMessage = $request->localMessage;
+    //     $responseTime = $request->responseTime;
+    //     $errorCode = $request->errorCode;   
+    //     $payType = $request->payType;
+    //     $extraData = $request->extraData;
+    //     $secretKey = env('MOMO_SECRET_KEY');
+    //     $extraData = "";
 
-        $rawHash = "partnerCode=" . $partnerCode .
-            "&accessKey=" . $accessKey . 
-            "&requestId=" . $requestId . 
-            "&amount=" . $amount . 
-            "&orderId=" . $orderId . 
-            "&orderInfo=" . $orderInfo . 
-            "&orderType=" . $orderType .
-            "&transId=" . $transId. 
-            "&message=" . $message .
-            "&localMessage=" . $localMessage.
-            "&responseTime=" . $responseTime.
-            "&errorCode=" . $errorCode. 
-            "&payType=" . $payType. 
-            "&extraData=" . $extraData;
-        $signature = hash_hmac("sha256", $rawHash, $secretKey);
+    //     $rawHash = "partnerCode=" . $partnerCode .
+    //         "&accessKey=" . $accessKey . 
+    //         "&requestId=" . $requestId . 
+    //         "&amount=" . $amount . 
+    //         "&orderId=" . $orderId . 
+    //         "&orderInfo=" . $orderInfo . 
+    //         "&orderType=" . $orderType .
+    //         "&transId=" . $transId. 
+    //         "&message=" . $message .
+    //         "&localMessage=" . $localMessage.
+    //         "&responseTime=" . $responseTime.
+    //         "&errorCode=" . $errorCode. 
+    //         "&payType=" . $payType. 
+    //         "&extraData=" . $extraData;
+    //     $signature = hash_hmac("sha256", $rawHash, $secretKey);
         
-        if (hash_equals($signature, $request->signature)) {
-            return true;
-        }
+    //     if (hash_equals($signature, $request->signature)) {
+    //         return true;
+    //     }
         
-        return false;
-    }
+    //     return false;
+    // }
 
-    public function payWithMoMo($orderId, $amount, $redirectUrl, $ipnUrl)
-    {
-        $endPoint = env('MOMO_END_POINT');
+    // public function payWithMoMo($orderId, $amount, $redirectUrl, $ipnUrl)
+    // {
+    //     $endPoint = env('MOMO_END_POINT');
 
-        $partnerCode = env('MOMO_PARTNER_CODE');;
-        $accessKey = env('MOMO_ACCESS_KEY');
-        $serectkey = env('MOMO_SECRET_KEY');
-        $orderInfo = "Thanh toán qua MoMo";
-        $extraData = "";
-        $requestId = time().mt_rand(111, 999)."";
-        $requestType = "captureWallet";
-        $rawHash = "accessKey=" . $accessKey . 
-            "&amount=" . $amount . 
-            "&extraData=" . $extraData . 
-            "&ipnUrl=" . $ipnUrl . 
-            "&orderId=" . $orderId . 
-            "&orderInfo=" . $orderInfo . 
-            "&partnerCode=" . $partnerCode . 
-            "&redirectUrl=" . $redirectUrl . 
-            "&requestId=" . $requestId . 
-            "&requestType=" . $requestType;
-        $signature = hash_hmac("sha256", $rawHash, $serectkey);
-        $data = array('partnerCode' => $partnerCode,
-        'partnerName' => "Test",
-        "storeId" => "MomoTestStore",
-        'requestId' => $requestId,
-        'amount' => $amount,
-        'orderId' => $orderId,
-        'orderInfo' => $orderInfo,
-        'redirectUrl' => $redirectUrl,
-        'ipnUrl' => $ipnUrl,
-        'lang' => 'vi',
-        'extraData' => $extraData,
-        'requestType' => $requestType,
-        'signature' => $signature);
+    //     $partnerCode = env('MOMO_PARTNER_CODE');;
+    //     $accessKey = env('MOMO_ACCESS_KEY');
+    //     $serectkey = env('MOMO_SECRET_KEY');
+    //     $orderInfo = "Thanh toán qua MoMo";
+    //     $extraData = "";
+    //     $requestId = time().mt_rand(111, 999)."";
+    //     $requestType = "captureWallet";
+    //     $rawHash = "accessKey=" . $accessKey . 
+    //         "&amount=" . $amount . 
+    //         "&extraData=" . $extraData . 
+    //         "&ipnUrl=" . $ipnUrl . 
+    //         "&orderId=" . $orderId . 
+    //         "&orderInfo=" . $orderInfo . 
+    //         "&partnerCode=" . $partnerCode . 
+    //         "&redirectUrl=" . $redirectUrl . 
+    //         "&requestId=" . $requestId . 
+    //         "&requestType=" . $requestType;
+    //     $signature = hash_hmac("sha256", $rawHash, $serectkey);
+    //     $data = array('partnerCode' => $partnerCode,
+    //     'partnerName' => "Test",
+    //     "storeId" => "MomoTestStore",
+    //     'requestId' => $requestId,
+    //     'amount' => $amount,
+    //     'orderId' => $orderId,
+    //     'orderInfo' => $orderInfo,
+    //     'redirectUrl' => $redirectUrl,
+    //     'ipnUrl' => $ipnUrl,
+    //     'lang' => 'vi',
+    //     'extraData' => $extraData,
+    //     'requestType' => $requestType,
+    //     'signature' => $signature);
         
-        $result = Http::acceptJson([
-            'application/json'
-        ])->post($endPoint, $data);
+    //     $result = Http::acceptJson([
+    //         'application/json'
+    //     ])->post($endPoint, $data);
 
-        $jsonResult = json_decode($result->body(), true); 
-        return redirect($jsonResult['payUrl']);
-    }
+    //     $jsonResult = json_decode($result->body(), true); 
+    //     return redirect($jsonResult['payUrl']);
+    // }
 
     public function handlePaymentWithVNPAY($vnp_Returnurl, $vnp_Amount, $vnp_TxnRef)
     {
@@ -325,7 +325,7 @@ class CheckOutService
         $vnp_HashSecret = env('VNPAY_SECRET_KEY');
         $vnp_Url = env('VNPAY_END_POINT');
         $vnp_Locale = "vn"; //Ngôn ngữ chuyển hướng thanh toán
-        $vnp_BankCode = "VNBANK"; //Mã phương thức thanh toán
+        $vnp_BankCode = ""; //Mã phương thức thanh toán
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR']; //IP Khách hàng thanh toán
 
         $inputData = array(
@@ -381,19 +381,37 @@ class CheckOutService
     public function callbackVNPay($request)
     {
         try {
+            $vnp_ResponseCode = $request->vnp_ResponseCode;
+            Log::info('VNPAY Response Code: ' . $vnp_ResponseCode);
+
+        // Trạng thái mặc định là 'wait'
+        $orderStatus = Order::STATUS_ORDER['wait'];
+
+        // Nếu phản hồi thành công (mã phản hồi là '00'), cập nhật trạng thái đơn hàng là 'paid'
+        if ($vnp_ResponseCode == '00') {
+            $orderStatus = Order::STATUS_ORDER['paid'];
+        } else {
+            // Ngược lại, nếu phản hồi không thành công, cập nhật trạng thái đơn hàng là 'failed'
+            $orderStatus = Order::STATUS_ORDER['unpaid'];
+        }
             //data order
             $dataOrder = [
                 'id' => $request->vnp_TxnRef,
                 'payment_id' => 3,
                 'user_id' => Auth::user()->id,
                 'total_money' => $request->vnp_Amount / 100,
-                'order_status' => Order::STATUS_ORDER['wait'],
+                'order_status' => $orderStatus,
                 'transport_fee' => $this->getTransportFee(),
                 'note' => null,
+                // 'vnp_ResponseCode' => $request ->$vnp_ResponseCode,
             ];
+            Log::info('Data Order: ' . json_encode($dataOrder));
             DB::beginTransaction();
             // create order
             $order = $this->orderRepository->create($dataOrder);
+            Log::info('Order created: ' . $order->id);
+            
+           
 
             // create order detail
             foreach(\Cart::getContent() as $product){
@@ -404,6 +422,7 @@ class CheckOutService
                     'unit_price' => $product->price,
                     'quantity' => $product->quantity,
                 ];
+                Log::info('Order Detail: ' . json_encode($orderDetail));
                 $this->orderDetailRepository->create($orderDetail);
             }
             DB::commit();
@@ -429,6 +448,7 @@ class CheckOutService
                     );
                 }
             }
+             
             return redirect()->route('cart.index')->with('error', 'Có lỗi xảy ra vui lòng kiểm tra lại');
         }
     }

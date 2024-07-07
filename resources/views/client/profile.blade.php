@@ -121,7 +121,10 @@
                       @csrf
                       <div class="form-group">
                         <label for="exampleInputEmail1">Mật Khẩu Hiện Tại</label>
-                        <input type="password" class="form-control" value="{{ old('current_password') }}" id="current_password" name="current_password" aria-describedby="emailHelp" placeholder="Nhập mật khẩu hiện tại">
+                        <div class="password-container">
+                          <input type="password" class="form-control" value="{{ old('password') }}" id="password" name="password" placeholder="Nhập mật khẩu">
+                          <span class="toggle-password" onclick="togglePassword()">Hiển thị</span>
+                       </div>
                         @if ($errors->get('current_password'))
                           <span id="current_password-error" class="error invalid-feedback" style="display: block">
                             {{ implode(", ",$errors->get('current_password')) }}
@@ -130,7 +133,10 @@
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Mật Khẩu Mới</label>
-                        <input type="password" class="form-control" value="{{ old('new_password') }}" id="new_password" name="new_password" aria-describedby="emailHelp" placeholder="Nhập mật khẩu mới">
+                        <div class="password-container">
+                          <input type="password" class="form-control" value="{{ old('new_password') }}" id="new_password" name="new_password" aria-describedby="emailHelp" placeholder="Nhập mật khẩu mới">
+                          <span class="toggle-password" onclick="togglePassword1()">Hiển thị</span>
+                       </div>
                         @if ($errors->get('new_password'))
                           <span id="new_password-error" class="error invalid-feedback" style="display: block">
                             {{ implode(", ",$errors->get('new_password')) }}
@@ -139,7 +145,10 @@
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Xác Nhận Mật Khẩu Mới</label>
-                        <input type="password" class="form-control" value="{{ old('confirm_password') }}" id="confirm_password" name="confirm_password" aria-describedby="emailHelp" placeholder="Xác nhận mật khẩu mới">
+                        <div class="password-container">
+                          <input type="password" class="form-control" value="{{ old('confirm_password') }}" id="confirm_password" name="confirm_password" aria-describedby="emailHelp" placeholder="Xác nhận mật khẩu mới">
+                          <span class="toggle-password" onclick="togglePassword2()">Hiển thị</span>
+                       </div>
                         @if ($errors->get('confirm_password'))
                           <span id="confirm_password-error" class="error invalid-feedback" style="display: block">
                             {{ implode(", ",$errors->get('confirm_password')) }}
@@ -163,5 +172,52 @@
     </div>
   </div>
 @vite(['resources/client/css/checkout.css', 'resources/client/js/profile.js'])
+<style>
+  .password-container {
+      position: relative;
+  }
+  .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+  }
+</style>
+<script>
+  function togglePassword() {
+      var passwordField = document.getElementById("password");
+      var togglePasswordButton = document.querySelector(".toggle-password");
+      if (passwordField.type === "password") {
+          passwordField.type = "text";
+          togglePasswordButton.textContent = "Ẩn";
+      } else {
+          passwordField.type = "password";
+          togglePasswordButton.textContent = "Hiển thị";
+      }
+  }
+  function togglePassword1() {
+      var passwordField = document.getElementById("new_password");
+      var togglePasswordButton = document.querySelector(".toggle-password1");
+      if (passwordField.type === "password") {
+          passwordField.type = "text";
+          togglePasswordButton.textContent = "Ẩn";
+      } else {
+          passwordField.type = "password";
+          togglePasswordButton.textContent = "Hiển thị";
+      }
+  }
+  function togglePassword2() {
+      var passwordField = document.getElementById("confirm_password");
+      var togglePasswordButton = document.querySelector(".toggle-password2");
+      if (passwordField.type === "password") {
+          passwordField.type = "text";
+          togglePasswordButton.textContent = "Ẩn";
+      } else {
+          passwordField.type = "password";
+          togglePasswordButton.textContent = "Hiển thị";
+      }
+  }
+</script>
 
 @endsection

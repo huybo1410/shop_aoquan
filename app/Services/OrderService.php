@@ -89,6 +89,16 @@ class OrderService
                             'value' => Order::STATUS_ORDER['received'],
                             'class' => 'badge badge-success'
                         ],
+                        [
+                            'text' => 'VNPay Chưa thách toán',
+                            'value' => Order::STATUS_ORDER['unpaid'],
+                            'class' => 'badge badge-warning'
+                        ],
+                        [
+                            'text' => 'VNPay Đã thách toán',
+                            'value' => Order::STATUS_ORDER['paid'],
+                            'class' => 'badge badge-success'
+                        ],
                     ],
                 ],
             ],

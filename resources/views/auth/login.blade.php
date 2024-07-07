@@ -26,7 +26,11 @@
                             </div>
                             <div class="form-group">
                               <label for="exampleInputPassword1">Mật Khẩu</label>
-                              <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu">
+                              <div class="password-container">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu">
+                                <span class="toggle-password" onclick="togglePassword()">Hiển thị</span>
+                            </div>
+                              {{-- <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu"> --}}
                               @if ($errors->get('password'))
                                 <span id="password-error" class="error invalid-feedback" style="display: block">
                                   {{ implode(", ",$errors->get('password')) }}
@@ -57,4 +61,29 @@
     </div>
 </div>
 @vite(['resources/common/js/login.js'])
+<style>
+  .password-container {
+      position: relative;
+  }
+  .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+  }
+</style>
+<script>
+  function togglePassword() {
+      var passwordField = document.getElementById("password");
+      var togglePasswordButton = document.querySelector(".toggle-password");
+      if (passwordField.type === "password") {
+          passwordField.type = "text";
+          togglePasswordButton.textContent = "Ẩn";
+      } else {
+          passwordField.type = "password";
+          togglePasswordButton.textContent = "Hiển thị";
+      }
+  }
+</script>
 @endsection

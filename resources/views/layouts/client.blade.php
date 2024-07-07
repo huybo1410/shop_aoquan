@@ -30,6 +30,23 @@
       .productname{
           padding-top: 10px;
       }
+      #top-up {
+  font-size: 3rem;
+  cursor: pointer;
+  position: fixed;
+  z-index: 9999;
+  color: #f73859;
+  bottom: 20px;
+  right: 15px;
+  display: none;
+  transform: rotateZ(300deg);
+  transition-duration: 0.4s;
+}
+#top-up:hover {
+  color: #1266dd;
+  transform: rotateZ(360deg);
+  transition-duration: 0.4s;
+}
   </style>
    <body id="home">
       <div class="wrapper">
@@ -122,6 +139,9 @@
          @yield('content-client')
          <div class="clearfix"></div>
          <div class="footer">
+            <div class="container" title="Về đầu trang" id="top-up">
+               <i class="fas fa-eye"></i>
+               </div>
             <div class="footer-info">
                <div class="container">
                   <div class="row">
