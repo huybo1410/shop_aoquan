@@ -38,16 +38,23 @@
                             </div>
                             <div class="form-group">
                               <label for="exampleInputPassword1">Mật Khẩu</label>
-                              <input type="password" class="form-control" value="{{ old('password') }}" id="password" name="password" placeholder="Nhập mật khẩu">
+                              <div class="password-container">
+                                <input type="password" class="form-control" value="{{ old('password') }}" id="password" name="password" placeholder="Nhập mật khẩu">
+                                <span class="toggle-password" onclick="togglePassword()">Hiển thị</span>
+                            </div>
                               @if ($errors->get('password'))
-                                <span id="password-error" class="error invalid-feedback" style="display: block">
+                                <span id="password-error" class="error invalid-feedback show-btn" style="display: block">
                                   {{ implode(", ",$errors->get('password')) }}
                                 </span>
+                                
                               @endif
                             </div>
                             <div class="form-group">
                               <label for="exampleInputPassword1">Xác Nhận Mật Khẩu</label>
-                              <input type="password" class="form-control" value="{{ old('password_confirmation') }}" id="password_confirm" name="password_confirm" placeholder="Xác nhận mật khẩu">
+                              <div class="password-container">
+                                <input type="password" class="form-control" value="{{ old('password_confirmation') }}" id="password_confirm" name="password_confirm" placeholder="Xác nhận mật khẩu">
+                                <span class="toggle-password1" onclick="togglePassword1()">Hiển thị</span>
+                            </div>
                               @if ($errors->get('password_confirm'))
                                 <span id="password_confirm-error" class="error invalid-feedback" style="display: block">
                                   {{ implode(", ",$errors->get('password_confirm')) }}
@@ -145,4 +152,50 @@
     </div>
 </div>
 @vite(['resources/client/js/register.js'])
+<style>
+  .password-container {
+      position: relative;
+  }
+  .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+  }
+  .toggle-password1 {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+  }
+</style>
+<script>
+  function togglePassword() {
+      
+      var passwordField = document.getElementById("password");
+      var togglePasswordButton = document.querySelector(".toggle-password");
+      if (passwordField.type === "password") {
+          passwordField.type = "text";
+          togglePasswordButton.textContent = "Ẩn";
+      } else {
+          passwordField.type = "password";
+          togglePasswordButton.textContent = "Hiển thị";
+      }
+  }
+  function togglePassword1() {
+      
+      var passwordField = document.getElementById("password_confirm");
+      var togglePasswordButton = document.querySelector(".toggle-password1");
+      if (passwordField.type === "password") {
+          passwordField.type = "text";
+          togglePasswordButton.textContent = "Ẩn";
+      } else {
+          passwordField.type = "password";
+          togglePasswordButton.textContent = "Hiển thị";
+      }
+  }
+</script>
+
 @endsection

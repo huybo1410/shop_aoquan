@@ -40,6 +40,8 @@ class Order extends Model
         'transporting' => 1,
         'cancel' => 2,
         'received' => 3,
+        'paid' =>4,
+        'unpaid' =>5,
     ];
 
     const PAYMENT_STATUS = [

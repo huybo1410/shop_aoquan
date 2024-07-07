@@ -43,7 +43,12 @@
                           <span class="badge badge-danger">Đã hủy</span>
                       @elseif($orderHistory->order_status == 3)
                           <span class="badge badge-success">Đã nhận hàng</span>
+                      @elseif($orderHistory->order_status == 4)
+                      <span class="badge badge-success">Đã thanh toán VNPAY</span>
+                      @elseif($orderHistory->order_status == 5)
+                      <span class="badge badge-warning">Chưa thanh toán VNPAY</span>
                       @endif
+                      
                     </td>
                     <td>{{ $orderHistory->note }}</td>
                     <td>
@@ -57,6 +62,10 @@
                         <a class="btn-a" style="margin-left: 20px;" href="{{ route('order_history.update', $orderHistory->id) }}">Xóa Đơn</a>
                         @elseif($orderHistory->order_status == 3)
                           <a class="btn-a" style="margin-left: 20px;" href="{{ route('order_history.update', $orderHistory->id) }}">Xóa Đơn</a>
+                        @elseif($orderHistory->order_status == 4)
+                        <a class="btn-a" style="margin-left: 20px;" href="{{ route('order_history.update', $orderHistory->id) }}">Xóa Đơn</a>
+                        @elseif($orderHistory->order_status == 5)
+                        <a class="btn-a" style="margin-left: 20px;" href="{{ route('order_history.update', $orderHistory->id) }}">Xóa Đơn</a>
                         @endif
                       </div>
                     </td>
